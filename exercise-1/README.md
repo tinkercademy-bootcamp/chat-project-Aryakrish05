@@ -12,8 +12,15 @@
 
 ## Learn Basics of g++ CLI
 
-- Compile the TCP client and server using `g++` from command line.
+- Compile the TCP client and server using `g++` from command line.(Done)
 - What are the most important command line arguments to learn for `g++`?
+  - name of the file to be compiled
+  - -o filename to give a name for output file
+  - -c flag for compiling without linking
+  - -Wall flag for enabling most common warnings
+  - -std=c++[version year 17 or 20] to change standard used for compilation
+  - -g to add debug information
+  - other file names that may be used in the code
 - What is the difference between debug vs release versions?
 - What are the tradeoffs between debug and release versions?
 - What arguments would you use in a debug build?
@@ -22,7 +29,7 @@
 
 ## Learn Basics of Make
 
-- Create a Makefile that will speed up the process.
+- Create a Makefile that will speed up the process.(Done)
 - [Quickstart tutorial to make](https://makefiletutorial.com/) - Learn make 
   fundamentals with practical examples and common patterns.
 - How else can you learn about make?
@@ -52,7 +59,7 @@
 ## Introduction to Sockets
 
 - Read the code in `src/tcp-echo-client.cc` and add a way to change the 
-  message sent using command line arguments
+  message sent using command line arguments(Done)
 - **Example**: `./client "hello message from the command prompt"` should send
   `"hello message from the command prompt"` to the server
 - Commit your changes into git
@@ -74,10 +81,13 @@
 - When is it better to use a pointer?
 - When is it better to use a reference?
 - What is the difference between `std::string` and a C-style string?
+  
 - What type is a C-style string?
+  - It is an array of characters terminated with a null character '\0'.
 - What happens when you iterate a pointer?
 - What are the most important safety tips to know when using pointers?
-
+  - We should ensure that the pointer is actually pointing to a valid memory location before dereferencing it
+  - Memory allo
 ## Learn Basics of Creating a C++ Project in Your IDE
 
 - How do you compile and run your project in your IDE?

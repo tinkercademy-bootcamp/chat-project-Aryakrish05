@@ -6,9 +6,21 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-int main() {
+int main(int argc,char* argv[]) {
   // #Question - are these the same type?
-  std::string message = "Hello from client";
+  //No they are not of the same type, message is of type std::string 
+  //while "Hello" is a char array,i.e C style string
+  std::string message = "Hello";
+  if(argc==1){
+    message = "Hello from client";
+  }
+  else if(argc==2){
+    message=argv[1];
+  }
+  else{
+    std::cout<<"Invalid Arguments"<<std::endl;
+    return -1;
+  }
   const int kPort = 8080;
   const std::string kServerAddress = "127.0.0.1";
   sockaddr_in address;

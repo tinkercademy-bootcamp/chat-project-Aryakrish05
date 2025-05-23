@@ -12,9 +12,13 @@
 
 ## Learn Basics of g++ CLI
 
-- Compile the TCP client and server using `g++` from command line.
+- Compile the TCP client and server using `g++` from command line.(Done)
 - What are the most important command line arguments to learn for `g++`?
+  - The most important command line arguments are argc and argv
+  - argc is an integer which stands for argument count, it denotes the number of arguments passed. This includes the name of the executable file.
+  - argv is an array of char*(it is of the typr char**) , can be thought of as an array of c-style strings. It stands for argument vector. 
 - What is the difference between debug vs release versions?
+  - 
 - What are the tradeoffs between debug and release versions?
 - What arguments would you use in a debug build?
 - What about for release?
@@ -22,7 +26,7 @@
 
 ## Learn Basics of Make
 
-- Create a Makefile that will speed up the process.
+- Create a Makefile that will speed up the process.(Done)
 - [Quickstart tutorial to make](https://makefiletutorial.com/) - Learn make 
   fundamentals with practical examples and common patterns.
 - How else can you learn about make?
@@ -74,10 +78,13 @@
 - When is it better to use a pointer?
 - When is it better to use a reference?
 - What is the difference between `std::string` and a C-style string?
+  
 - What type is a C-style string?
+  - It is an array of characters terminated with a null character '\0'.
 - What happens when you iterate a pointer?
 - What are the most important safety tips to know when using pointers?
-
+  - We should ensure that the pointer is actually pointing to a valid memory location before dereferencing it
+  - Memory allo
 ## Learn Basics of Creating a C++ Project in Your IDE
 
 - How do you compile and run your project in your IDE?

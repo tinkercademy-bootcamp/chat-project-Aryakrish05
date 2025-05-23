@@ -14,11 +14,14 @@
 
 - Compile the TCP client and server using `g++` from command line.(Done)
 - What are the most important command line arguments to learn for `g++`?
-  - The most important command line arguments are argc and argv
-  - argc is an integer which stands for argument count, it denotes the number of arguments passed. This includes the name of the executable file.
-  - argv is an array of char*(it is of the typr char**) , can be thought of as an array of c-style strings. It stands for argument vector. 
+  - name of the file to be compiled
+  - -o filename to give a name for output file
+  - -c flag for compiling without linking
+  - -Wall flag for enabling most common warnings
+  - -std=c++[version year 17 or 20] to change standard used for compilation
+  - -g to add debug information
+  - other file names that may be used in the code
 - What is the difference between debug vs release versions?
-  - 
 - What are the tradeoffs between debug and release versions?
 - What arguments would you use in a debug build?
 - What about for release?
@@ -56,7 +59,7 @@
 ## Introduction to Sockets
 
 - Read the code in `src/tcp-echo-client.cc` and add a way to change the 
-  message sent using command line arguments
+  message sent using command line arguments(Done)
 - **Example**: `./client "hello message from the command prompt"` should send
   `"hello message from the command prompt"` to the server
 - Commit your changes into git

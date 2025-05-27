@@ -1,7 +1,6 @@
 # Exercise 1
 
 **Update this README with your answers to the questions below.**
-
 ## Learning How to Learn
 
 - Answer the following questions in this file and commit and push your changes.

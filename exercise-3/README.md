@@ -8,8 +8,12 @@
 - A new function `check_error()` has been created and `create_socket()` from 
   exercise-2 has been refactored to make use of it
 - What are the benefits of writing code in this way?
-- Are there any costs to writing code like this?
-- Apply `check_error` to all the code in `src/`
+  - The number of if statements written has been reduced, the code has been slightly shortened
+  - The person reading the code will easily be able to understand that the statement is checking if there have been
+  any errors and is handling it due to the descriptive nature of the function name
+- **Are there any costs to writing code like this?**
+  - Yes there is probably some cost to writing code like this as there may be overhead due to function calls, however using inlining and certain optimisations, this overhead may be overcome
+- Apply `check_error` to all the code in `src/`**(Done)**
 
 ## Introduction to Compiler Explorer
 

@@ -58,7 +58,15 @@ void send_and_receive_message(int sock, const std::string &message) {
     std::cerr << "Read error\n";
   }
 }
-
+std::string concatenate(int argc, char*argv[]){
+    std::string concatenated_string="";
+    for(int i=1;i<argc;i++){
+        std::string current_argument=argv[i];
+        concatenated_string+=current_argument;
+        concatenated_string+=" ";
+    }
+    return concatenated_string;
+}
 std::string read_args(int argc, char *argv[]) {
   std::string message = "Hello from client";
   if (argc == 1) {
@@ -66,7 +74,7 @@ std::string read_args(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   if (argc > 1) {
-    message = argv[1];
+    message = concatenate(argc, argv);
   }
   return message;
 }

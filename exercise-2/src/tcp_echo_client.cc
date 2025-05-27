@@ -43,6 +43,7 @@ void connect_to_server(int sock, sockaddr_in &server_address) {
 void send_and_receive_message(int sock, const std::string &message) {
   const int kBufferSize = 1024;
   // #Question - is buffer the best name we can use?
+  // we may call it read_buffer which is more appropriate as it is being used for reading only
   char buffer[kBufferSize] = {0};
 
   // Send the message to the server
@@ -61,6 +62,20 @@ void send_and_receive_message(int sock, const std::string &message) {
 }
 
 // #Question - what can be improved in this function?
+//If the client has to send a message with multiple words in it separated by spaces, 
+// they must be enclosed in quotes
+//Instead we can allow typing of multiple words without quotes 
+// by writing a function to concatenate the different c strings
+
+std::string concatenate(int argc, char*argv[]){
+    std::string concatenated_string="";
+    for(int i=1;i<argc;i++){
+        std::string current_argument=argv[i];
+        concatenated_string+=current_argument;
+        concatenated_string+=" ";
+    }
+    return concatenated_string;
+}
 std::string read_args(int argc, char *argv[]) {
   std::string message = "Hello from client";
   if (argc == 1) {
@@ -68,7 +83,7 @@ std::string read_args(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   if (argc > 1) {
-    message = argv[1];
+    message = concatenate(argc, argv);
   }
   return message;
 }

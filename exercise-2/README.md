@@ -62,8 +62,12 @@
 ## Thinking About Performance
 
 - Does writing code this way have any impact on performance?
+  - I think performance is slightly impacted when functions are used as there is a certain overhead in function calls, there are some loads and stores on the stack involved.
+  - Function calls also cause misses in the instruction caches which may slow down the program.
 - What do we mean when we say performance?
+  - Performance may mean the time taken by a program to run
 - How do we measure performance in a program?
+  - We may use libraries like std::chrono to measure the time taken by the program to run.
 
 ## Play with Git
 

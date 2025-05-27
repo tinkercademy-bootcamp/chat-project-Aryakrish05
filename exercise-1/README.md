@@ -32,27 +32,43 @@
   - We may need to use debuggers like gdb, so we use -g as a flag while compiling. We may also use -O0 to disable compiler optimisations.
 - What about for release?
   - We may use -O2,-O3,etc which are compiler optimisations.
-- **What other kinds of build types are useful?**
-
+- What other kinds of build types are useful?
+  - Benchmark/Performance build
+  - Staging build or Pre-release build
+  - Test build
+  - Sanitized build
 ## Learn Basics of Make
 
 - Create a Makefile that will speed up the process.**(Done)**
 - **[Quickstart tutorial to make](https://makefiletutorial.com/) - Learn make
   fundamentals with practical examples and common patterns.**
-- **How else can you learn about make?**
+- How else can you learn about make?
   - [Official manual for GNU make](https://www.gnu.org/software/make/manual/)
   - Using search engines or LLMs
-- **How can you tell if the resource you are using is correct?**
+- How can you tell if the resource you are using is correct?
   - Verification with the official manual mentioned above may be done.
 - Create a makefile such that when you run `make` with no arguments, it will:
   - Create `build/` directory if it does not exist
   - Create executables **client** and **server** in `build/`, if needed
   - **How does make know when it needs to rebuild the executables?**
+    - The prerequisites are mentioned for a given target. It compares the time when the current target was made and the last modified time of the prerequisites, if these are the same, then it doesn't rebuild the executables. Else it rebuilds.
   - Change your Makefile such that `make clean` will remove `build/` and all its contents **(Done)**
 - **What are the most important command line arguments to learn for make?**
+  - `make` which builds the default target(the one specified first in Makefile)
+  - `make target` which builds a particular target
+  - Varibles may also be passed through command line **Read more**
 - **What are the most important directives to learn about in Makefile?**
-- **What are the most important commands to implement in your Makefile?**
-- **Which ones are essential, which ones are nice to haves?**
+  - `target:prerequisites` - defines a rule
+  - `.PHONY`- declares a rule not tied to a file
+  - `include`- may be used to split makefiles
+  - conditional logic
+  - variables **Read More** 
+- What are the most important commands to implement in your Makefile?
+  - We should have the first/default target to be all(building this results in compilation of the entire program) for eg `make all`
+  - `make clean` is also helpful to delete executables
+- Which ones are essential, which ones are nice to haves?
+  - make all/any-other-targetname must be present at the top which is a default target. Just calling make should complete the build.
+  - make clean, used for deleting the executables created now although nice to have is not a necessity.
 
 ## Learn Basics of Git
 

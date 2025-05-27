@@ -1,10 +1,12 @@
-all: client server
+.PHONY: all clean
 
-client: tcp_echo_client.cc
+all: build/client build/server
+
+build/client: tcp_echo_client.cc
 	mkdir -p build
 	g++ tcp_echo_client.cc -o build/client
 
-server: tcp_echo_server.cc
+build/server: tcp_echo_server.cc
 	mkdir -p build
 	g++ tcp_echo_server.cc -o build/server
 

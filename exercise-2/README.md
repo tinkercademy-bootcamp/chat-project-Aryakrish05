@@ -12,7 +12,9 @@
   overview and protocol families
 - Or type `man 7 socket` in terminal
 - When would you want to use a `SOCK_RAW` stream?
-
+  - We may need to use `SOCK_RAW` while implementing our custom protocols
+  - `SOCK_RAW` is used to give raw access to the data-link layer and network layer( ignoring the transport layer)
+  - This may be used to bypass protocols like TCP and UDP
 ### TCP and IP Protocols
 - [IPv4](https://www.rfc-editor.org/info/rfc791) - Internet Protocol 
   specification defining packet structure and routing

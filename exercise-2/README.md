@@ -55,9 +55,14 @@
 ## Refactoring: Extract Function
 
 - What is different in this code compared to exercise-1?
+  - This code works almost the same  as exercise-1 but it has the code distributed over various functions which make it more modular and easier to understand.
 - Is this code better or worse than exercise-1?
+  - This code is better than that of exercise-1 in the way that it is easier to read.
 - What are the tradeoffs compared to exercise-1?
+  - This might be slightly slower due to overheads due to function calls
 - Are you able to spot any mistakes or inconsistencies in the changes?
+  - I think the code in my exercise-1 and this code are not different at all. 
+  - However I have added an additional function which allows the user to type multiple words in the command line.
   
 ## Thinking About Performance
 

@@ -27,17 +27,25 @@
 - [C++23 ISO standard draft](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2023/n4950.pdf) - 
   Working draft of the C++ language specification
 - Is the above the official C++23 spec? 
+  - No it's just a draft of the spec.
 - Where is the official C++23 spec?
+  - To view the official spec, one needs to purchase from the link mentioned in https://isocpp.org/std/the-standard.
 - Why was this link chosen instead?
+  - The official spec is not available online and this is probably the latest draft before the spec was published.
 - Is this a helpful reference for learning C++?
-- Can the various implementations of C++ compilers be different from the
-  C++ standard?
+  - I don't think so, it will only serve as a reference for experienced programmers who may be writing compilers for C++ and stuff.
+  - This as mentioned in the above website is not meant for learners.
+- **Can the various implementations of C++ compilers be different from the C++ standard?**
+  - Compilers must aim to follow the C++ standard but may differ in certain aspects of implementation.
 - What are the most widely used and most significant C++ compilers?
+  - GCC and Clang
 - Where is the equivalent spec for C++26?
-
+  - Although the final standard document hasn't been finalised, the most recent draft can be found on
+  [C++26 Draft](https://open-std.org/jtc1/sc22/wg21/docs/papers/2025/n5008.pdf) which was obtained from the [Github Repository](https://github.com/cplusplus/draft).
 - Where do you find the spec for the HTTP protocol?
+  - [Links to official HTTP specs](https://httpwg.org/specs/) is where we may find the latest specifications for the HTTP protocol, some of the RFCs by the IETF.
 - What about HTTPS? Is there a spec for that protocol?
-
+  - There is no separate spec for this protocol. Information on it can be found in the HTTP specs.
 ## Introduction to C++ and Sockets Programming
 
 - Read the code in `src/`

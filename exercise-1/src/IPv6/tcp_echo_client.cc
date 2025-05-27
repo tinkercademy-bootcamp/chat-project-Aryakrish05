@@ -7,9 +7,7 @@
 #include <unistd.h>
 
 int main(int argc,char* argv[]) {
-  // #Question - are these the same type?
-  //No they are not of the same type, message is of type std::string 
-  //while "Hello" is a char array,i.e C style string
+  // All occurrences of AF_INET are replaced with AF_INET6
   std::string message = "Hello";
   if(argc==1){
     message = "Hello from client";
@@ -22,21 +20,20 @@ int main(int argc,char* argv[]) {
     return -1;
   }
   const int kPort = 8080;
-  const std::string kServerAddress = "127.0.0.1";
-  //this is the ipv4 address that refers to the local machine (called loopback address or localhost)
-  sockaddr_in address;
+  const std::string kServerAddress = "::1";//loopback address
+  sockaddr_in6 address;
   const int kBufferSize = 1024;
   char buffer[kBufferSize] = {0};
   // Creating socket file descriptor
-  int my_sock = socket(AF_INET, SOCK_STREAM, 0);
+  int my_sock = socket(AF_INET6, SOCK_STREAM, 0);
   if (my_sock < 0) {
     std::cerr << "Socket creation erron\n";
     return -1;
   }
-  address.sin_family = AF_INET;
-  address.sin_port = htons(kPort);
+  address.sin6_family = AF_INET6;//change sin_family to sin6_family
+  address.sin6_port = htons(kPort);
   // Convert IPv4 and IPv6 addresses from text to binary form
-  if (inet_pton(AF_INET, kServerAddress.c_str(), &address.sin_addr) <= 0) {
+  if (inet_pton(AF_INET6, kServerAddress.c_str(), &address.sin6_addr) <= 0) {
     std::cerr << "Invalid address/ Address not supported\n";
     return -1;
   }

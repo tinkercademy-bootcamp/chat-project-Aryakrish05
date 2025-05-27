@@ -41,7 +41,10 @@
 - **[Quickstart tutorial to make](https://makefiletutorial.com/) - Learn make
   fundamentals with practical examples and common patterns.**
 - **How else can you learn about make?**
+  - [Official manual for GNU make](https://www.gnu.org/software/make/manual/)
+  - Using search engines or LLMs
 - **How can you tell if the resource you are using is correct?**
+  - Verification with the official manual mentioned above may be done.
 - Create a makefile such that when you run `make` with no arguments, it will:
   - Create `build/` directory if it does not exist
   - Create executables **client** and **server** in `build/`, if needed
@@ -122,11 +125,11 @@
 - Commit your changes into git
 - **What do all these headers do? Find out more about them**
   - These contain the implementations of functions and macros which are essential for the functioning of the program.
-    - **unistd.h**
-    - **sys/types.h**
-    - **arpa/inet.h**
-    - **netinet/in.h**
-    - **sys/socket.h**
+    - **unistd.h**- Provides access to POSIX API[read(),close()] 
+    - **sys/types.h** - Provides system data types like size_t (not required as it is indirectly included by other headers)
+    - **arpa/inet.h**- Provides functions for interconversion of addresses between human readable and binary types [inet_pton()]
+    - **netinet/in.h**- Provides structs,consts and functions for usage of protocols like IPv4 and IPv6 [sockaddr_in,htons()]
+    - **sys/socket.h**- Has structures and functions defined which are essential for socket programming [socket(),connect(),send(),setsockopt(),bind(),listen(),accept()]
 - How do you find out which part of the below code comes from which header?
   - After hovering the cursor over the function/object/macros, do Ctrl+click to be redirected to the original location.
   - To get more information on system calls like socket, we may type `man socket` to get more info.
@@ -134,9 +137,13 @@
   - We just have to change the server address appropriately.
   **Do we have to change the port ?**
 - **How do you change the code to send to a IPv6 address instead of IPv4?**
-  - afds
-- **Bonus: How do you change the client code to connect by hostname instead
-  of IP address?**
+  - The struct containing the address sockaddr_in must be changed to sockaddr_in6.This struct has contents
+    - sin6_family which must be set to AF_INET6
+    - sin6_port which must be set to PortNo
+    - sin6_addr- a struct of type in6_addr containing the IPv6 address which must be set to in6addr_any which allows the socket to bind to any process
+  - All occurrences of AF_INET should be replaced with AF_INET6
+  - The loopback address in the client code must be changed to "::1".
+- **Bonus: How do you change the client code to connect by hostname instead of IP address?**
   
 ## Introduction to Memory Management
 

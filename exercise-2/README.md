@@ -82,8 +82,21 @@
 - Try different ways to refactor the code from exercise-1 to make it more readable.
 - Make sure to commit each change as small and self-contained commit
 - This will make it easier to revert your code if you need to
-- What is `git tag`? How is `git tag` different from `git branch`?
+- **What is `git tag`? How is `git tag` different from `git branch`?**
+  - A tag is a reference to a specific point in the history of a branch
+  - It is usually used to mark versions of the code which are functioning well or alternatively release versions
+  Some commands using git tag:
+    - **git tag** - used to list all the tags
+    - **git tag -l "pattern*"**- used to list all the tags starting with a given pattern
+    - **git tag `<tagname>`**- used to mark the current state of the repo with a tag. Tags created like this are called lightweight tags. They are pretty much like a branch that doesn't change-a pointer to a specific commit
+    - **git tag -a `<tagname>` -m `<message>`**- used to mark the current state of the repo as an **annotated tag**
+    - **git show `<tagname>`** - shows the details of a tag
+    - **git push origin `<tagname>`**- used to push a locally existing tag onto a remote repo
+    - **`git tag -d <tagnames>`** or **`git tag --delete <tagnames>`**- used to delete tags locally
+    - **`git push origin -d <tagnames>`** or **`git push origin --delete <tagnames>`** or **`git push origin :<tagname>`** can be used for deleting some tags from a remote repo
+    - **`git checkout -b <branch-name> <tag-name>`** - used to create a branch from a tagged checkpoint of the repo and switch to it
 - How can you use `git tag` and `git branch` to make programming easier and more fun?
+  - Tags may be marked after important commits and branches may be created later from those tagged versions of the repo
 
 ## Learn Basics of Debugging in Your IDE
 

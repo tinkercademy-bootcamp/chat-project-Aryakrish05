@@ -50,7 +50,9 @@
 
 - Read the code in `src/`
 - Are there any bugs in this code? 
+  - I don't think there are any bugs in this code
 - What can you do to identify if there are bugs in the code?
+  - We may think of test cases or edge cases and run the code on them. 
 
 ## Refactoring: Extract Function
 
@@ -76,15 +78,12 @@
 
 ## Play with Git
 
-- There isn't necessarily a single correct answer for how to abstract the 
-  code from exercise-1 into functions
-- Try different ways to refactor the code from exercise-1 to make it more
-  readable.
+- There isn't necessarily a single correct answer for how to abstract the code from exercise-1 into functions
+- Try different ways to refactor the code from exercise-1 to make it more readable.
 - Make sure to commit each change as small and self-contained commit
 - This will make it easier to revert your code if you need to
 - What is `git tag`? How is `git tag` different from `git branch`?
-- How can you use `git tag` and `git branch` to make programming easier and
-  more fun?
+- How can you use `git tag` and `git branch` to make programming easier and more fun?
 
 ## Learn Basics of Debugging in Your IDE
 

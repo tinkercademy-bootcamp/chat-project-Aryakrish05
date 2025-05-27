@@ -95,6 +95,7 @@
     - **`git tag -d <tagnames>`** or **`git tag --delete <tagnames>`**- used to delete tags locally
     - **`git push origin -d <tagnames>`** or **`git push origin --delete <tagnames>`** or **`git push origin :<tagname>`** can be used for deleting some tags from a remote repo
     - **`git checkout -b <branch-name> <tag-name>`** - used to create a branch from a tagged checkpoint of the repo and switch to it
+  -Creating a tag with the same identifier as another tag will result in an error
 - How can you use `git tag` and `git branch` to make programming easier and more fun?
   - Tags may be marked after important commits and branches may be created later from those tagged versions of the repo
 

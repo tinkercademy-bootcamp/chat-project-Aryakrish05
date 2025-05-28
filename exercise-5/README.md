@@ -12,8 +12,11 @@
 
 - Here is one way to separate out the code into multiple files
 - Is this the best way to do it? 
+  - I think there are better ways, for example I think separating the functions declared/defined in main files for client and server may be separately maintained in different header and cpp files. We may also modify Makefile accordingly such that when we do any changes to the main files, we wouldn't have to recompile all the addresses
+  - I also think the header file need not be included in the corresponding cpp file. **Is this correct ?**
 - What are the advantages and disadvantages?
-
+  - One advantage that I observed in this kind of partitioning is that it is slightly more clearer and there aren't too many files, writing a Makefile for this is also comparitively easier
+  - A disadvantage as mentioned in the above question is that if the server address is changed, the entire file with all the functions need to be compiled which will take more time than if the functions were in a separate file
 ## Introduction to Namespace
 
 - There are different ways namespace is being used in this exercise

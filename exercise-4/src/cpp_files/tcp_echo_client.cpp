@@ -6,7 +6,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "error_handling.hpp"
+#include "../header_files/error_handling.hpp"
 
 sockaddr_in create_address(const std::string &server_ip, int port) {
   sockaddr_in address;

@@ -1,8 +1,9 @@
 #include <iostream>
 #include<sys/socket.h>
+#include<netinet/in.h>
 #include <unistd.h>
-#include "tcp_echo_server.hpp"
-#include "socket_creation.hpp"
+#include "header_files/tcp_echo_server.hpp"
+#include "header_files/socket_creation.hpp"
 int main() {
   const int kPort = 8080;
   int my_socket = create_socket();

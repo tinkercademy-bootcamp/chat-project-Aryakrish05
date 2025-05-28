@@ -51,7 +51,7 @@
   - Create `build/` directory if it does not exist
   - Create executables **client** and **server** in `build/`, if needed
   - **How does make know when it needs to rebuild the executables?**
-    - The prerequisites are mentioned for a given target. It compares the time when the current target was made and the last modified time of the prerequisites, if these are the same, then it doesn't rebuild the executables. Else it rebuilds.
+    - The prerequisites are mentioned for a given target. It compares the time when the current target was made and the last modified time of the prerequisites, if the last modified time of the prerequisites was before the last time the target was made(last modified time of target essentially) , then it doesn't rebuild the executables. Else it rebuilds.
   - Change your Makefile such that `make clean` will remove `build/` and all its contents **(Done)**
 - **What are the most important command line arguments to learn for make?**
   - `make` which builds the default target(the one specified first in Makefile)

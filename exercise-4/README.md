@@ -19,11 +19,14 @@
 ### Compiling vs Linking
 
 - What is the difference between compiling and linking in C++?
-- What is the difference between creating an executable and creating a 
-  library?
-- How do you compile a library, and then use that library to compile an
-  executable?
-
+  - Compiling is the process in which a single file of a program is converted into the corresponding objfile or .o file.
+  - Linking is the process in which multiple obj files are processed by the linker making the final binaries(executable files). This resolves external symbol references(references to functions defined in other files) and identifies the entry point of the program.(usually main())
+  Note that even if there is a single file, linking must be done to find the entry point of the program.
+- What is the difference between creating an executable and creating a library?
+  - An executable contains compiled and linked code in a machine-readable format. This can be executed directly without further processing.
+  - A library is a collection of pre-written **(do they have to be compiled already ?)** program files which contain functions/classes/macros which may be imported in other code and used to perform some tasks. A library by itself cannot be executed in general.
+- **How do you compile a library, and then use that library to compile an executable?**
+  - We may compile a library and use a linker to link the code which uses functions/classes from the library to obtain the final executable.
 ### Reminder 
 [Quickstart tutorial to make](https://makefiletutorial.com/) - Learn make 
 fundamentals with practical examples and common patterns.

@@ -3,20 +3,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-template <typename T, typename S> void check_error(T test, S error_message) {
-  if (test) {
-    std::cerr << error_message << "\n";
-    exit(EXIT_FAILURE);
-  }
-}
-
-int create_socket() {
-  int my_sock;
-  my_sock = socket(AF_INET, SOCK_STREAM, 0);
-  check_error(my_sock < 0, "Socket creation error\n");
-  return my_sock;
-}
+#include "error_handling.hpp"
 
 void set_socket_options(int sock, int opt) {
   auto err_code = setsockopt(sock, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
@@ -78,17 +65,4 @@ void handle_connections(int sock, int port) {
     check_error(accepted_socket < 0, "Accept error n ");
     handle_accept(accepted_socket);
   }
-}
-
-int main() {
-  const int kPort = 8080;
-  int my_socket = create_socket();
-  sockaddr_in address = create_address(kPort);
-
-  start_listening_on_socket(my_socket, address);
-  std::cout << "Server listening on port " << kPort << "\n";
-  handle_connections(my_socket, kPort);
-  close(my_socket);
-
-  return 0;
 }

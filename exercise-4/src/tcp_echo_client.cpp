@@ -6,19 +6,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-void check_error(bool test, std::string error_message) {
-  if (test) {
-    std::cerr << error_message << "\n";
-    exit(EXIT_FAILURE);
-  }
-}
-
-int create_socket() {
-  int sock = socket(AF_INET, SOCK_STREAM, 0);
-  check_error(sock < 0, "Socket creation error\n");
-  return sock;
-}
+#include "error_handling.hpp"
 
 sockaddr_in create_address(const std::string &server_ip, int port) {
   sockaddr_in address;
@@ -65,20 +53,4 @@ std::string read_args(int argc, char *argv[]) {
     message = argv[1];
   }
   return message;
-}
-
-int main(int argc, char *argv[]) {
-  const int kPort = 8080;
-  const std::string kServerAddress = "127.0.0.1";
-
-  std::string message = read_args(argc, argv);
-
-  int my_socket = create_socket();
-  sockaddr_in server_address = create_address(kServerAddress, kPort);
-
-  connect_to_server(my_socket, server_address);
-  send_and_receive_message(my_socket, message);
-  close(my_socket);
-
-  return 0;
 }

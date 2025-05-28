@@ -32,5 +32,14 @@ fundamentals with practical examples and common patterns.
 
 - Is it better to have many small files spread across many directories, or
   a few large files across fewer directories?
+    - It is good to have multiple small files as it is easier to maintain. Since each file contains a section of the code separated logically, it is easier for someone to read the code.
+    - If changes are made to some part of the code, the whole code need not be compiled, in this case, we may save some compile time.
+    - This will help when multiple people are working on the same project
+    - Although this may take slightly more time when compiling all the files(say the first time it is being compiled), as the project becomes larger, the above pros will easily become more important than this.
 - Is there a difference in compilation time between the two?
+  - Having multiple files may be slightly slower when building the whole project.
+  - Due to more includes, the preprocessing may take more time than when fewer large files are present.
+  - I don't think there will be much of a time difference while compiling as the same code is compiled in both cases. It is assumed that the same functions are not defined in different files as then these cannot be linked without encountering errors.
+  - Linking may take more time as the linker has to search for a called function across multiple files.
 - How can you assess performance other than compilation speed?
+  - We may assess performance by looking at the time it takes for the program to run, i.e runtime.

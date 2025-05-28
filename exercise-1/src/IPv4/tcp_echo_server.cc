@@ -1,7 +1,7 @@
 #include <iostream>
 #include <netinet/in.h>
 #include <sys/socket.h>
-#include <sys/types.h>
+//#include <sys/types.h>
 #include <unistd.h>
 
 int main() {
@@ -47,7 +47,11 @@ int main() {
     }
     // Wait for read
     ssize_t read_size = read(new_sock, buffer, kBufferSize);
-    std::cout << "Received: " << buffer << "\n";
+    std::cout << "Received: ";
+    for(int i=0;i<read_size;i++){
+      std::cout<<buffer[i];
+    }
+    std::cout<<"\n";
     // Send reply
     send(new_sock, buffer, read_size, 0);
     std::cout << "Echo message sent" << "\n";

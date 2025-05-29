@@ -33,8 +33,17 @@
 
 ## Programming Sense of Taste
 
-- How do you judge what makes a particular choice of namespace and directory structure? 
+- How do you judge what makes a particular choice of namespace and directory structure good? 
+  - Functions performing similar tasks must be grouped together, in the same namespace.
+  - Namespaces should effectively avoid naming conflicts
+  - Directories must be designed so as to reflect the logical structure of the project.
 - How do you judge what makes a good naming convention or programming style?
+  - The code should be readable without much need for referring to external documentation. This may be observed in a code with descriptive variable and function names
+  - The naming conventions adopted should be consistent as otherwise it becomes hard to understand.
+  - The style of programming, or sequence in which functions are called/defined must be logically clear
+  - A particular function should do one task and it should do it efficiently instead of doing multiple tasks which leads to a code that is hard to understand.
+  - Moreover, implementing the functions should be done in a simple, concise and logical manner.
+
 
 ## "Senses" in Programming
 

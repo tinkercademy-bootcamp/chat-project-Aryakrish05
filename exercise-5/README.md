@@ -8,6 +8,7 @@
   to another?**
     - We may use the command `diff -ru exercise-x/src/ exercise-y/src/` to compare code directories of exercises x and y after being in the directory of the repository, this is assuming that the changes to both exercises are comitted in the same branch of the repository
     **what if they are in diff repositories ? How to use git for this ?**
+    - If the file structure is itself different, this won't really be very helpful as the file structure differences will only be shown for these files.
 ## Using Classes
 
 - Here is one way to separate out the code into multiple files

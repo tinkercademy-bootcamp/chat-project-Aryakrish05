@@ -1,11 +1,9 @@
 #ifndef TCP_ECHO_SERVER_HPP
-#define TCP_ECHO_SERVER_HPP 1
+#define TCP_ECHO_SERVER_HPP
 #include <sys/types.h>
 #include<netinet/in.h>
 
 void set_socket_options(int sock, int opt);
-
-sockaddr_in create_address(int port);
 
 void bind_address_to_socket(int sock, sockaddr_in &address);
 

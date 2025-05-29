@@ -3,20 +3,13 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include "../header_files/error_handling.hpp"
+#include "../error_handling.hpp"
+#include "../socket_creation/socket_creation.hpp"
 
 void set_socket_options(int sock, int opt) {
   auto err_code = setsockopt(sock, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
                              &opt, sizeof(opt));
   check_error(err_code < 0, "setsockopt() error\n");
-}
-
-sockaddr_in create_address(int port) {
-  sockaddr_in address;
-  address.sin_family = AF_INET;
-  address.sin_addr.s_addr = INADDR_ANY;
-  address.sin_port = htons(port);
-  return address;
 }
 
 void bind_address_to_socket(int sock, sockaddr_in &address) {

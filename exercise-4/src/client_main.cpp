@@ -2,8 +2,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include<netinet/in.h>
-#include "header_files/tcp_echo_client.hpp"
-#include "header_files/socket_creation.hpp"
+#include "tcp_echo_client/tcp_echo_client.hpp"
+#include "socket_creation/socket_creation.hpp"
 
 int main(int argc, char *argv[]) {
   const int kPort = 8080;
@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
   std::string message = read_args(argc, argv);
 
   int my_socket = create_socket();
-  sockaddr_in server_address = create_address(kServerAddress, kPort);
+  sockaddr_in server_address = create_address(kPort,kServerAddress);
 
   connect_to_server(my_socket, server_address);
   send_and_receive_message(my_socket, message);

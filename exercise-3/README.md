@@ -8,53 +8,62 @@
 - A new function `check_error()` has been created and `create_socket()` from 
   exercise-2 has been refactored to make use of it
 - What are the benefits of writing code in this way?
-  - The number of if statements written has been reduced, the code has been slightly shortened
-  - The person reading the code will easily be able to understand that the statement is checking if there have been
-  any errors and is handling it due to the descriptive nature of the function name
-- **Are there any costs to writing code like this?**
-  - Yes there is probably some cost to writing code like this as there may be overhead due to function calls, however using inlining and certain optimisations, this overhead may be overcome
+  - Yes, redundancy in code is reduced. Previously there were multiple if statements used in the functions, using a check_error function reduces the number of if statements in the code
+  - It becomes easier for the reader to find out what is going on when the function `check_error` is called because of the descriptive nature of the name.
+- Are there any costs to writing code like this?
+  - There may be increased runtime due to overheads due to function calls.
 - Apply `check_error` to all the code in `src/`**(Done)**
 
 ## Introduction to Compiler Explorer
 
-- Try out the old `create_socket()` and the new `check_error()` and 
+- **Try out the old `create_socket()` and the new `check_error()` and 
   `create_socket()` in [Compiler Explorer](https://godbolt.org) - Interactive 
-  tool for exploring how C++ code compiles to assembly
-- What is happening here?
-- Can you think of any different approaches to this problem?
+  tool for exploring how C++ code compiles to assembly**
+- **What is happening here?**
+- **Can you think of any different approaches to this problem?**
 - How can you modify your Makefile to generate assembly code instead of
   compiled code?
+    - Passing -S as a flag to the compiler while compiling will result in an assembly code corresponfing to the compiled code.
 - **Note**: You can save the generated assembly from Compiler Explorer
-- **Bonus**: Can you view assembly code using your IDE?
-- **Bonus**: How do you see the assembly when you step through each line in
-  debugging mode from your IDE?
+- **Bonus: Can you view assembly code using your IDE?**
+- **Bonus: How do you see the assembly when you step through each line in
+  debugging mode from your IDE?**
 - [x86 assembly reference](http://ref.x86asm.net/) - Comprehensive reference 
   for x86 assembly language instructions and syntax
 
 ## More About Memory Management
 
 - Make sure you have `-fsanitize=address` in both your `CXX_FLAGS` and 
-  `LD_FLAGS` in your Makefile
+  `LD_FLAGS` in your Makefile **(Done)**
 - What do `-fsanitize=address`, `CXX_FLAGS` and `LD_FLAGS` mean?
-- With the new tool of the Compiler Explorer, and keeping in mind what you 
-  have learned about how to use debug mode
-- What happens when you look at a `std::string` using the above methods?
+  - `CXX_FLAGS` refer to the default flags that must be passed to the compiler while compiling in a Makefile
+  - `LD_FLAGS` refer to the default flags that must be passed to the linker while linking in a Makefile 
+  - `-fsanitize=address` is a flag to be passed to the compiler to enable `address-sanitizer` which is a runtime memory error detector. It helps in checking for out-of-bounds errors and dereferencing after freeing errors. It is useful in debug builds.
+  - A compilation+linking call using the above would typically look like this, 
+    - `$(CXX) $(CXX_FLAGS) filename.cpp -o output_filename $(LD_FLAGS)`
+- With the new tool of the Compiler Explorer, and keeping in mind what you have learned about how to use debug mode
+- **What happens when you look at a `std::string` using the above methods?**
 - Where is the text in your `std::string`?
+  - In the assembly code, the text in the string is usually stored in the .data section.
 - What is `std::optional`?
-- How do you find out the memory layout of a `std::optional`?
+  - `std::optional` is a feature starting from `C++17` which allows an object of this "type" to not take a value.
+  - It is templatised, if we want to allow a variable of type `typename` which can be allowed to not take a value (`std::nullopt`) we may declare the variable as `std::optional<typename>`.
+- **How do you find out the memory layout of a `std::optional`?**
 - Read https://en.cppreference.com/w/cpp/memory#Smart_pointers - Guide to 
   modern C++ memory management using smart pointers
 - Which pointer types are the most important to know about?
+  - `std::unique_ptr` and `std::shared_ptr`
 - Which smart pointer should you use by default if you can?
-- Does changing your optimization level in `CXXFLAGS` from `-O0` to `-O3` have
-  any impact on the answers to any of the above questions?
-
+  - `std::unique_ptr` should be used as it takes the sole ownership of the memory it points to and it deallocates it when execution moves out of the scope of the ptr or when destructor is called
+  - we should use `std::shared_ptr` instead if we want to allow multiple pointers pointing to the same memory location.
+- **Does changing your optimization level in `CXXFLAGS` from `-O0` to `-O3` have any impact on the answers to any of the above questions?**
+  - Yes, if compiler optimisations are enabled, there may not be an additional overhead during runtime due to using the check_error function. The compiler may decide to replace all these extra function calls by the code to avoid this overhead. There will be an increased compilation time though. 
 ## More Thinking About Performance
 
-- After your experiments with Compiler Explorer, do you have any updates for
-  your answers in exercise-2?
+- **After your experiments with Compiler Explorer, do you have any updates for
+  your answers in exercise-2?**
 
-### Bonus: Do Not Watch Now 
+### **Bonus: Do Not Watch Now** 
 
 - [More about Compiler Explorer](https://www.youtube.com/watch?v=bSkpMdDe4g4) - 
   Deep dive into compiler optimization and assembly analysis

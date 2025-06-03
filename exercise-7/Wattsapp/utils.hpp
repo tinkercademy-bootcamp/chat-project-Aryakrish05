@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 
-#define DEFAULT_PORT    8080
+#define PORT    8080
 #define MAX_CONN        16
 #define MAX_EVENTS      32
 #define BUF_SIZE        16

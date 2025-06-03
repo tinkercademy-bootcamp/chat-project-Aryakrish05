@@ -14,7 +14,7 @@ public:
         void join_channel(Channel* channel_ptr);
         void exit_channel(Channel* channel_ptr);
         bool check_channel(Channel* channel_ptr);
-        void send_data(std::string& data);
+        void send_data(const std::string& data);
         std::string get_user_name();
 };
 #endif

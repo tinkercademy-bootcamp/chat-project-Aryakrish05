@@ -25,7 +25,7 @@ void Client::exit_channel(Channel* channel_ptr){
 bool Client::check_channel(Channel* channel_ptr){
         return (channel_list.count(channel_ptr));
 }
-void Client::send_data(std::string& data){
+void Client::send_data(const std::string& data){
         if(send(connected_socket,data.c_str(),data.size(),MSG_NOSIGNAL)<0){
                 delete this;
         }

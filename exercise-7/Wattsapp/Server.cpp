@@ -40,13 +40,14 @@ static int set_non_blocking(int socketfd){
         }
         return 0;
 }
-void parse_message(std::string message,Client* sender){
-       if(message[0]==Command::SEND_INVITE){
-                //format is USERNAME~CHANNELNAME
+void parse_message(std::string& message,Client* sender){
+        std::string reply="";
+        std::string sender_name=sender->get_user_name();
+        if(message[0]==Command::SEND_INVITE){
+                //format is USERNAME~CHANNELNAME\0
                 int i;
                 std::string invitee_name="";
                 std::string channel_name;
-                std::string reply;
                 for(i=1;i<message.size();i++){
                         if(message[i]==Command::SEPARATOR)break;
                         invitee_name+=message[i];
@@ -55,18 +56,40 @@ void parse_message(std::string message,Client* sender){
                         channel_name+=message[i];
                 }
                 if(!user_name_client_ptr.count(invitee_name)){
-                        reply+=Command::INVALID_INVITEE;
-                        reply+=Command::TERMINAL;
-                        sender->send_data(reply);
+                        sender->send_data(std::string({Command::INVALID_INVITEE,Command::TERMINAL}));
+                        return;
                 }
-                //format is USERNAME~CHANNELNAME
+                sender->send_data(std::string({Command::INVITED,Command::TERMINAL}));
+                //format is USERNAME~CHANNELNAME\0
                 reply+=Command::REC_INVITE;
                 reply+=sender->get_user_name();
                 reply+=Command::SEPARATOR;
                 reply+=channel_name;
                 reply+=Command::TERMINAL;
                 user_name_client_ptr[invitee_name]->send_data(reply);
-       }
+                return;
+        }
+        if(message[0]==Command::SEND_MSG_CHANNEL){
+                //format CHANNEL~CONTENT\0
+                std::string channel_name="";
+                std::string content="";
+                int i;
+                for(i=1;i<message.size();i++){
+                        if(message[i]==Command::SEPARATOR)break;
+                        channel_name+=message[i];
+                }
+                for(i=i+1;i<message.size();i++){
+                        content+=message[i];
+                }
+                //format SENDER~CONTENT\0
+                reply+=sender_name;
+                reply+=Command::SEPARATOR;
+                reply+=content;
+                reply+=Command::TERMINAL;
+                channel_name_channel_ptr[channel_name]->broadcast_data(reply);
+                return;
+        }
+
 }
 void server_run(){
         char buf[BUF_SIZE];

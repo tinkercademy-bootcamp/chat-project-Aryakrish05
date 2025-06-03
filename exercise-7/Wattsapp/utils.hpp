@@ -30,6 +30,7 @@ enum Command{
         CHANNEL_CREATED='l',
         INVALID_INVITEE='m',
         INVITED='n',
+        CHANNELNAME_IN_USE='m',
         
         SEPARATOR='~',
         TERMINAL='\0'

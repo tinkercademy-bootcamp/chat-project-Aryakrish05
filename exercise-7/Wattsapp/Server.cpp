@@ -1,3 +1,4 @@
+#include <string>
 #include <unistd.h>
 
 #include <sys/socket.h>
@@ -39,8 +40,33 @@ static int set_non_blocking(int socketfd){
         }
         return 0;
 }
-void parse_message(char buf[],char reply[],int no_characters){
-       
+void parse_message(std::string message,Client* sender){
+       if(message[0]==Command::SEND_INVITE){
+                //format is USERNAME~CHANNELNAME
+                int i;
+                std::string invitee_name="";
+                std::string channel_name;
+                std::string reply;
+                for(i=1;i<message.size();i++){
+                        if(message[i]==Command::SEPARATOR)break;
+                        invitee_name+=message[i];
+                }
+                for(i=i+1;i<message.size();i++){
+                        channel_name+=message[i];
+                }
+                if(!user_name_client_ptr.count(invitee_name)){
+                        reply+=Command::INVALID_INVITEE;
+                        reply+=Command::TERMINAL;
+                        sender->send_data(reply);
+                }
+                //format is USERNAME~CHANNELNAME
+                reply+=Command::REC_INVITE;
+                reply+=sender->get_user_name();
+                reply+=Command::SEPARATOR;
+                reply+=channel_name;
+                reply+=Command::TERMINAL;
+                user_name_client_ptr[invitee_name]->send_data(reply);
+       }
 }
 void server_run(){
         char buf[BUF_SIZE];
@@ -73,6 +99,7 @@ void server_run(){
                                 int no_characters_recd=recv(conn_sock,buf,sizeof(buf),MSG_WAITALL);
                                 print_error(no_characters_recd<0, "Username not received");
                                 char op_type=buf[0];
+                                //op_type here must always be username based
                                 if(op_type==Command::CREATE_USERNAME){
                                         std::string user_name="";
                                         for(int i=1;i<no_characters_recd;i++){
@@ -86,14 +113,37 @@ void server_run(){
                                                 close(conn_sock);                                                
                                         }
                                         else{
+                                                buf[0]=Command::USER_CREATED;
+                                                buf[1]=Command::TERMINAL;
+                                                print_error(send(conn_sock,buf,2,MSG_NOSIGNAL)<0,"Disconnected before username is confirmed");
                                                 Client* new_client=new Client(user_name,conn_sock);
                                                 user_name_client_ptr[user_name]=new_client;
                                                 socket_client[conn_sock]=new_client;
                                         }   
                                 }
+                                else{
+                                        print_error(1, "Invalid Username entry");
+                                }
                                 set_non_blocking(conn_sock);
                                 epoll_ctl_add(epfd,conn_sock,EPOLLIN | EPOLLET | EPOLLRDHUP |
 					      EPOLLHUP);
+                        }
+                        else if(events[i].events & EPOLLIN){
+                                std::string message="";
+                                for(;;){
+					memset(buf,0, sizeof(buf));
+					int no_characters_recd = recv(events[i].data.fd, buf,sizeof(buf),0);
+                                        for(int i=0;i<no_characters_recd;i++){
+                                                if(buf[i]==Command::TERMINAL)break;
+                                                message+=buf[i];
+                                        }
+					if (no_characters_recd <= 0 /* || errno == EAGAIN */ ) {
+						break;
+					} else {
+						printf("[+] data: %s\n", buf);
+						print_error(send(events[i].data.fd, buf,strlen(buf),MSG_NOSIGNAL)<0,"Disconnected alr");//
+					}
+                                }
                         }
                 }
         }

@@ -28,6 +28,8 @@ enum Command{
         USERNAME_IN_USE='j',
         CHANNEL_EXITED='k',
         CHANNEL_CREATED='l',
+        INVALID_INVITEE='m',
+        INVITED='n',
         
         SEPARATOR='~',
         TERMINAL='\0'

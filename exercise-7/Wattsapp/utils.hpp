@@ -11,7 +11,7 @@
 
 //predefined starting characters of each communicated message between server and client
 //indicate which character corresponds to which command
-enum class Command:char{
+enum Command{
         
         CREATE_USERNAME='a',
         
@@ -29,6 +29,7 @@ enum class Command:char{
         CHANNEL_EXITED='k',
         CHANNEL_CREATED='l',
         
+        SEPARATOR='~',
         TERMINAL='\0'
 };
 template <typename T>

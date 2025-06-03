@@ -13,9 +13,9 @@
 #include <cstring>
 
 #include "utils.hpp"
-//#include "Server_channel.hpp"
-//#include "Server_client.hpp"
-//#include "Database.hpp"
+#include "Server_channel.hpp"
+#include "Server_client.hpp"
+#include "Database.hpp"
 
 static void epoll_ctl_add(int epfd,int fd,uint32_t events){
         struct epoll_event ev;
@@ -39,9 +39,13 @@ static int set_non_blocking(int socketfd){
         }
         return 0;
 }
-
+void parse_message(char buf[],char reply[],int no_characters){
+       
+}
 void server_run(){
         char buf[BUF_SIZE];
+        char reply[BUF_SIZE];
+        epoll_event events[MAX_EVENTS];
         
         int epfd=epoll_create1(0);
         
@@ -50,5 +54,47 @@ void server_run(){
         set_sockaddr(&server_address);
         print_error(bind(listen_sock,(sockaddr*)&server_address,sizeof(server_address))<0,
                 "bind failed");
-        
+        set_non_blocking(listen_sock);
+        listen(listen_sock,MAX_CONN);
+
+        epoll_ctl_add(epfd,listen_sock,EPOLLIN|EPOLLOUT|EPOLLET);
+
+        int conn_sock;
+        sockaddr_in client_address;
+        socklen_t client_address_len=sizeof(client_address);
+        for(;;){
+                int no_events=epoll_wait(epfd,events,MAX_EVENTS,-1);
+                for(int i=0;i<no_events;i++){
+                        if(events[i].data.fd==listen_sock){
+                                int conn_sock=accept(listen_sock,(sockaddr*)&client_address, &client_address_len);
+                                inet_ntop(AF_INET,&client_address.sin_addr,buf,client_address_len);
+                                printf("[+] connected with %s:%d\n", buf,
+				       ntohs(client_address.sin_port));
+                                int no_characters_recd=recv(conn_sock,buf,sizeof(buf),MSG_WAITALL);
+                                print_error(no_characters_recd<0, "Username not received");
+                                char op_type=buf[0];
+                                if(op_type==Command::CREATE_USERNAME){
+                                        std::string user_name="";
+                                        for(int i=1;i<no_characters_recd;i++){
+                                                if(buf[i]=='\0')break;
+                                                user_name+=buf[i];
+                                        }
+                                        if(user_name_client_ptr.count(user_name)){
+                                                buf[0]=Command::USERNAME_IN_USE;
+                                                buf[1]=Command::TERMINAL;
+                                                print_error(send(conn_sock,buf,2,MSG_NOSIGNAL)<0,"Disconnected before username is entered");
+                                                close(conn_sock);                                                
+                                        }
+                                        else{
+                                                Client* new_client=new Client(user_name,conn_sock);
+                                                user_name_client_ptr[user_name]=new_client;
+                                                socket_client[conn_sock]=new_client;
+                                        }   
+                                }
+                                set_non_blocking(conn_sock);
+                                epoll_ctl_add(epfd,conn_sock,EPOLLIN | EPOLLET | EPOLLRDHUP |
+					      EPOLLHUP);
+                        }
+                }
+        }
 }

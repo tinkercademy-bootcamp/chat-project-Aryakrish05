@@ -9,8 +9,14 @@
 - https://github.com/joakimthun/io-uring-echo-server
 - https://man7.org/linux/man-pages/man7/epoll.7.html
 - What other resources can you find about epoll?
+  - Linux Man Pages are a great and authentic resource to learn more information on epoll
 - Are the above code repos examples of good code or bad code?
+  - I feel that different styles are being followed in these repos as they are written in C.
+  - However, in the second repository, it would have been better if the code had been separated into different files with functions placed logically. 
 - How do you decide what is good code or bad code?
+  - In general,a good code is one with consistent formatting and logical variable names. The code should be self documented.
+  - The functions should each perform one function and should do that correctly.
+  - Redundant code is not preferred as it becomes harder to maintain and modify.
 
 ## Creating a Chat Client/Server Using EPOLL
 

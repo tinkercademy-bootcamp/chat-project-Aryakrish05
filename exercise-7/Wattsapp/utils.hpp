@@ -6,10 +6,13 @@
 enum class Command:char{
         CREATE_USERNAME='a',
         SEND_INVITE='b',
-        ACCEPT_INVITE='c',
-        CREATE_CHANNEL='d',
-        SEND_MSG_CHANNEL='e',
-        EXIT_CHANNEL='f',
+        REC_INVITE='c',
+        ACCEPT_INVITE='d',
+        CREATE_CHANNEL='e',
+        SEND_MSG_CHANNEL='f',
+        REC_MSG_CHANNEL='g'
+        EXIT_CHANNEL='h',
+        REC_INVITE='i',
 };
 
 #endif

@@ -1,6 +1,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include <unistd.h>
 #include "Server_channel.hpp"
 #include "Server_client.hpp"
 #include "Database.hpp"

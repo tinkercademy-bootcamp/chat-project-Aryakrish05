@@ -1,7 +1,6 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <string>
 #include <iostream>
 
 #define PORT    8080
@@ -32,9 +31,10 @@ enum class Command:char{
         
         TERMINAL='\0'
 };
-void print_error(bool condition,std::string error_msg){
-        if(condition){
-                std::cerr<<error_msg<<"\n";
-        }
+template <typename T>
+void print_error(bool condition, const T& error_msg) {
+    if (condition) {
+        std::cerr << error_msg << '\n';
+    }
 }
 #endif

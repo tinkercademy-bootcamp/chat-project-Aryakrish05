@@ -1,8 +1,15 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
-#include <iostream>
+
 #include <string>
-#define PORT 8080
+#include <iostream>
+
+#define DEFAULT_PORT    8080
+#define MAX_CONN        16
+#define MAX_EVENTS      32
+#define BUF_SIZE        16
+#define MAX_LINE        256
+
 //predefined starting characters of each communicated message between server and client
 //indicate which character corresponds to which command
 enum class Command:char{
@@ -25,5 +32,9 @@ enum class Command:char{
         
         TERMINAL='\0'
 };
-
+void print_error(bool condition,std::string error_msg){
+        if(condition){
+                std::cerr<<error_msg<<"\n";
+        }
+}
 #endif

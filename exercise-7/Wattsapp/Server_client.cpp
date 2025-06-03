@@ -21,6 +21,7 @@ void Client::join_channel(Channel* channel_ptr){
 }
 void Client::exit_channel(Channel* channel_ptr){
         channel_list.erase(channel_ptr);
+        channel_ptr->remove_client(this);
 }
 bool Client::check_channel(Channel* channel_ptr){
         return (channel_list.count(channel_ptr));

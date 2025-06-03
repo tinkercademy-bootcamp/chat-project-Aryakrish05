@@ -34,6 +34,7 @@ enum Command{
         INVALID_INVITEE='m',
         INVITED='n',
         CHANNELNAME_IN_USE='m',
+        CHANNEL_JOINED='p',
         
         SEPARATOR='~',
         TERMINAL='\0'

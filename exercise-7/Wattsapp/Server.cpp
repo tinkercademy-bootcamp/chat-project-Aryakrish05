@@ -43,10 +43,10 @@ static int set_non_blocking(int socketfd){
 void parse_message(std::string& message,Client* sender){
         std::string reply="";
         std::string sender_name=sender->get_user_name();
+        std::string channel_name="",invitee_name="",content="";
         if(message[0]==Command::SEND_INVITE){
                 //format is USERNAME~CHANNELNAME\0
                 int i;
-                std::string invitee_name="",channel_name="";
                 split_message(message,invitee_name,channel_name);
                 if(!user_name_client_ptr.count(invitee_name)){
                         make_message(Command::INVALID_INVITEE,{},reply);
@@ -63,8 +63,6 @@ void parse_message(std::string& message,Client* sender){
         }
         if(message[0]==Command::SEND_MSG_CHANNEL){
                 //format CHANNEL~CONTENT\0
-                std::string channel_name="";
-                std::string content="";
                 split_message(message,channel_name,content);
                 //format SENDER~CHANNEL~CONTENT\0
                 make_message(Command::REC_MSG_CHANNEL,
@@ -74,15 +72,28 @@ void parse_message(std::string& message,Client* sender){
         }
         if(message[0]==Command::CREATE_CHANNEL){
                 //CHANNEL
-                std::string channel_name;
                 split_message(message,channel_name);
-                
+                if(channel_name_channel_ptr.count(channel_name)){
+                        make_message(Command::CHANNELNAME_IN_USE,{},reply);
+                        sender->send_data(reply);
+                }
+                Channel* new_channel=new Channel(channel_name,sender);
+                make_message(Command::CHANNEL_CREATED,{},reply);
+                sender->send_data(reply);
         }
         if(message[0]==Command::EXIT_CHANNEL){
-
+                //CHANNEL
+                split_message(message,channel_name);
+                sender->exit_channel(channel_name_channel_ptr[channel_name]);
+                make_message(Command::CHANNEL_EXITED,{}, reply);
+                sender->send_data(reply);
         }
         if(message[0]==Command::ACCEPT_INVITE){
-
+                //CHANNEL
+                split_message(message,channel_name);
+                sender->join_channel(channel_name_channel_ptr[channel_name]);
+                make_message(Command::CHANNEL_JOINED,{},reply);
+                sender->send_data(reply);
         }
 
 }

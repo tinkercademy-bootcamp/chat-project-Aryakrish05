@@ -35,7 +35,7 @@ enum Command{
         CHANNEL_JOINED='p',
         
         SEPARATOR='~',
-        TERMINAL='\0'
+        TERMINAL='|'
 };
 
 void print_error(bool condition, const std::string& error_msg);

@@ -26,6 +26,8 @@ static int set_non_blocking(int socketfd);
 
 void parse_message(std::string& message,Client* sender);
 
+void set_socket_options(int sock, int opt);
+
 void server_run();
 
 #endif

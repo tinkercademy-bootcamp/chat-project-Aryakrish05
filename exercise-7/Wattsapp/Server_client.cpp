@@ -6,7 +6,7 @@
 #include "Server_client.hpp"
 #include "Database.hpp"
 
-Client::Client(std::string& name,int socket):user_name(name),connected_socket(socket){}
+Client::Client(int socket):user_name("Default_name"),connected_socket(socket){}
 Client::~Client(){
         close(connected_socket);
         for(auto member_channel:channel_list){
@@ -33,4 +33,7 @@ void Client::send_data(const std::string& data){
 }
 std::string Client::get_user_name(){
         return user_name;
+}
+void Client::set_user_name(std::string new_user_name){
+        user_name=new_user_name;
 }

@@ -12,6 +12,7 @@
 #include <fcntl.h>
  
 #include <cstring>
+#include <iostream>
 
 #include "utils.hpp"
 #include "Server_channel.hpp"
@@ -45,6 +46,17 @@ void parse_message(std::string& message,Client* sender){
         std::string reply="";
         std::string sender_name=sender->get_user_name();
         std::string channel_name="",invitee_name="",content="";
+        if(message[0]==Command::CREATE_USERNAME){
+                split_message(message,content);
+                if(user_name_client_ptr.count(content)){
+                        make_message(Command::USERNAME_IN_USE,{}, reply);
+                        sender->send_data(reply);
+                }
+                sender->set_user_name(content);
+                make_message(Command::USER_CREATED,{}, reply);
+                sender->send_data(reply);
+                return;
+        }
         if(message[0]==Command::SEND_INVITE){
                 //format is USERNAME~CHANNELNAME\0
                 int i;
@@ -81,6 +93,7 @@ void parse_message(std::string& message,Client* sender){
                 Channel* new_channel=new Channel(channel_name,sender);
                 make_message(Command::CHANNEL_CREATED,{},reply);
                 sender->send_data(reply);
+                return;
         }
         if(message[0]==Command::EXIT_CHANNEL){
                 //CHANNEL
@@ -88,6 +101,7 @@ void parse_message(std::string& message,Client* sender){
                 sender->exit_channel(channel_name_channel_ptr[channel_name]);
                 make_message(Command::CHANNEL_EXITED,{}, reply);
                 sender->send_data(reply);
+                return;
         }
         if(message[0]==Command::ACCEPT_INVITE){
                 //CHANNEL
@@ -95,38 +109,58 @@ void parse_message(std::string& message,Client* sender){
                 sender->join_channel(channel_name_channel_ptr[channel_name]);
                 make_message(Command::CHANNEL_JOINED,{},reply);
                 sender->send_data(reply);
+                return;
         }
-
+}
+void set_socket_options(int sock, int opt) {
+  auto err_code = setsockopt(sock, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT,
+                             &opt, sizeof(opt));
+  print_error(err_code < 0, "setsockopt() error\n");
 }
 void server_run(){
         char buf[BUF_SIZE];
+        
         char reply[BUF_SIZE];
+        
         epoll_event events[MAX_EVENTS];
         
         int epfd=epoll_create1(0);
         
         int listen_sock=socket(AF_INET,SOCK_STREAM,0);
+        
         sockaddr_in server_address;
+        
+        set_socket_options(listen_sock, 1);
+        
         set_sockaddr(&server_address);
+        
         print_error(bind(listen_sock,(sockaddr*)&server_address,sizeof(server_address))<0,
                 "bind failed");
-        set_non_blocking(listen_sock);
-        listen(listen_sock,MAX_CONN);
 
-        epoll_ctl_add(epfd,listen_sock,EPOLLIN|EPOLLOUT|EPOLLET);
+        set_non_blocking(listen_sock);
+
+        print_error(listen(listen_sock,MAX_CONN)<0,"Not listening");
+
+        epoll_ctl_add(epfd,listen_sock,EPOLLIN|EPOLLET|EPOLLOUT);
 
         int conn_sock;
         sockaddr_in client_address;
         socklen_t client_address_len=sizeof(client_address);
         for(;;){
-                int no_events=epoll_wait(epfd,events,MAX_EVENTS,-1);
+                int no_events=epoll_wait(epfd,events,MAX_EVENTS,5000);
+                std::cout<<no_events<<"\n";
                 for(int i=0;i<no_events;i++){
                         if(events[i].data.fd==listen_sock){
                                 int conn_sock=accept(listen_sock,(sockaddr*)&client_address, &client_address_len);
                                 inet_ntop(AF_INET,&client_address.sin_addr,buf,client_address_len);
                                 printf("[+] connected with %s:%d\n", buf,
 				       ntohs(client_address.sin_port));
-                                int no_characters_recd=recv(conn_sock,buf,sizeof(buf),MSG_WAITALL);
+                                Client* new_client=new Client(conn_sock);
+                                socket_client[conn_sock]=new_client;
+                                set_non_blocking(conn_sock);
+                                epoll_ctl_add(epfd,conn_sock,EPOLLIN | EPOLLET | EPOLLRDHUP |
+					      EPOLLHUP);
+                                /*int no_characters_recd=recv(conn_sock,buf,sizeof(buf),0);
                                 print_error(no_characters_recd<0, "Username not received");
                                 char op_type=buf[0];
                                 //op_type here must always be username based
@@ -146,17 +180,14 @@ void server_run(){
                                                 buf[0]=Command::USER_CREATED;
                                                 buf[1]=Command::TERMINAL;
                                                 print_error(send(conn_sock,buf,2,MSG_NOSIGNAL)<0,"Disconnected before username is confirmed");
-                                                Client* new_client=new Client(user_name,conn_sock);
+                                                
                                                 user_name_client_ptr[user_name]=new_client;
                                                 socket_client[conn_sock]=new_client;
                                         }   
                                 }
                                 else{
                                         print_error(1, "Invalid Username entry");
-                                }
-                                set_non_blocking(conn_sock);
-                                epoll_ctl_add(epfd,conn_sock,EPOLLIN | EPOLLET | EPOLLRDHUP |
-					      EPOLLHUP);
+                                }*/
                         }
                         else if(events[i].events & EPOLLIN){
                                 std::string message="";
@@ -174,6 +205,7 @@ void server_run(){
 						print_error(send(events[i].data.fd, buf,strlen(buf),MSG_NOSIGNAL)<0,"Disconnected alr");//
 					}
                                 }
+                                parse_message(message,socket_client[events[i].data.fd]);
                         }
                         else{
                                 printf("[+] unexpected\n");
@@ -182,7 +214,8 @@ void server_run(){
 				printf("[+] connection closed\n");
 				epoll_ctl(epfd, EPOLL_CTL_DEL,
 					  events[i].data.fd, NULL);
-				close(events[i].data.fd);
+                                delete socket_client[events[i].data.fd];
+				//close(events[i].data.fd);
 				continue;
 			}
                 }

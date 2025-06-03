@@ -13,6 +13,8 @@ enum class Command:char{
         REC_MSG_CHANNEL='g'
         EXIT_CHANNEL='h',
         REC_INVITE='i',
+        CHANNEL_EXITED='j',
+        CHANNEL_CREATED='k',
         TERMIN='\0'
 };
 

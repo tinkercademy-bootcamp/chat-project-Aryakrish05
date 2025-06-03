@@ -40,6 +40,7 @@ static int set_non_blocking(int socketfd){
         }
         return 0;
 }
+
 void parse_message(std::string& message,Client* sender){
         std::string reply="";
         std::string sender_name=sender->get_user_name();
@@ -174,6 +175,16 @@ void server_run(){
 					}
                                 }
                         }
+                        else{
+                                printf("[+] unexpected\n");
+			}
+                        if (events[i].events & (EPOLLRDHUP | EPOLLHUP)) {
+				printf("[+] connection closed\n");
+				epoll_ctl(epfd, EPOLL_CTL_DEL,
+					  events[i].data.fd, NULL);
+				close(events[i].data.fd);
+				continue;
+			}
                 }
         }
 }

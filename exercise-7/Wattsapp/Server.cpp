@@ -32,3 +32,11 @@ static void set_sockaddr(struct sockaddr_in * addr){
         addr->sin_addr.s_addr=INADDR_ANY;
         addr->sin_port=htons(PORT);
 }
+
+static int set_non_blocking(int sockfd){
+        int errcode=fcntl(sockfd,F_SETFL,fcntl(sockfd,F_GETFL,0)|O_NONBLOCK);
+        if(errcode==-1){
+                return -1;
+        }
+        return 0;
+}

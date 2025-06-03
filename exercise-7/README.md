@@ -46,9 +46,15 @@
 ## Adding a Third Party Library from Source
 
 - Not all useful open source libraries will be available as a debian package
-- For the purposes of this workshop, your only options are to install a 
-  shared library into `usr/include` and `usr/lib`, or to git clone
+- For the purposes of this workshop, your only options are to install a shared library into `usr/include` and `usr/lib`, or to git clone
   the source code and build it
 - What are the tradeoffs between using a library from `usr/lib` vs git cloning
   the source and using that instead?
+    - using a package manager for installation is easier than git cloning from source as the latter takes more time due to the need to manually configure build.
+    - However, not all libraries can be installed using package managers.
+    - The package manager may install outdated versions of the library while the newest version may be obtained by cloning and building from source.
 - What is the difference between `-l` and `-L` when linking using `g++`?
+  - `-L` and `-l` are both linker flags
+  - `-l` tells the linker to look for a particular pre-compiled library while `-L` tells the linker where to look for it(i.e the path to the directory where the library is present).
+  - If `-L` is not present, then the linker typically looks for the library in default places like `/usr/lib`.
+  - `-L` flag should typically preceed `-l` flag when `LD_FLAGS` are specified.

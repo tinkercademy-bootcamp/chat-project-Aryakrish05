@@ -46,26 +46,18 @@ void parse_message(std::string& message,Client* sender){
         if(message[0]==Command::SEND_INVITE){
                 //format is USERNAME~CHANNELNAME\0
                 int i;
-                std::string invitee_name="";
-                std::string channel_name;
-                for(i=1;i<message.size();i++){
-                        if(message[i]==Command::SEPARATOR)break;
-                        invitee_name+=message[i];
-                }
-                for(i=i+1;i<message.size();i++){
-                        channel_name+=message[i];
-                }
+                std::string invitee_name="",channel_name="";
+                split_message(message,invitee_name,channel_name);
                 if(!user_name_client_ptr.count(invitee_name)){
-                        sender->send_data(std::string({Command::INVALID_INVITEE,Command::TERMINAL}));
+                        make_message(Command::INVALID_INVITEE,{},reply);
+                        sender->send_data(reply);
                         return;
                 }
-                sender->send_data(std::string({Command::INVITED,Command::TERMINAL}));
+                make_message(INVITED,{},reply);
+                sender->send_data(reply);
                 //format is USERNAME~CHANNELNAME\0
-                reply+=Command::REC_INVITE;
-                reply+=sender->get_user_name();
-                reply+=Command::SEPARATOR;
-                reply+=channel_name;
-                reply+=Command::TERMINAL;
+                make_message(Command::REC_INVITE,
+                        {sender_name,channel_name},reply);
                 user_name_client_ptr[invitee_name]->send_data(reply);
                 return;
         }
@@ -73,21 +65,24 @@ void parse_message(std::string& message,Client* sender){
                 //format CHANNEL~CONTENT\0
                 std::string channel_name="";
                 std::string content="";
-                int i;
-                for(i=1;i<message.size();i++){
-                        if(message[i]==Command::SEPARATOR)break;
-                        channel_name+=message[i];
-                }
-                for(i=i+1;i<message.size();i++){
-                        content+=message[i];
-                }
-                //format SENDER~CONTENT\0
-                reply+=sender_name;
-                reply+=Command::SEPARATOR;
-                reply+=content;
-                reply+=Command::TERMINAL;
+                split_message(message,channel_name,content);
+                //format SENDER~CHANNEL~CONTENT\0
+                make_message(Command::REC_MSG_CHANNEL,
+                        {sender_name,channel_name,content},reply);
                 channel_name_channel_ptr[channel_name]->broadcast_data(reply);
                 return;
+        }
+        if(message[0]==Command::CREATE_CHANNEL){
+                //CHANNEL
+                std::string channel_name;
+                split_message(message,channel_name);
+                
+        }
+        if(message[0]==Command::EXIT_CHANNEL){
+
+        }
+        if(message[0]==Command::ACCEPT_INVITE){
+
         }
 
 }

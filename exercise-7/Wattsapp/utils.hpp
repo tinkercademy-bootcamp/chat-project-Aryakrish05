@@ -1,9 +1,7 @@
 #ifndef UTILS_HPP
 #define UTILS_HPP
 
-#include <iostream>
 #include <string>
-#include <system_error>
 #include <vector>
 
 #define PORT            8080
@@ -40,34 +38,9 @@ enum Command{
         TERMINAL='\0'
 };
 
-void print_error(bool condition, const std::string& error_msg) {
-    if (condition) {
-        std::cerr << error_msg << '\n';
-    }
-}
-void split_message(const std::string& message,std::string& first_argument,std::string& second_argument){
-        int i;
-        for(i=1;i<message.size();i++){
-                if(message[i]==Command::SEPARATOR)break;
-                first_argument+=message[i];
-        }
-        for(i=i+1;i<message.size();i++){
-                second_argument+=message[i];
-        }
-}
-void split_message(const std::string& message, std::string& argument){
-        int i;
-        for(int i=1;i<message.size();i++){
-                argument+=message[i];
-        }
-}
-void make_message(const char command,const std::vector<std::string>& arguments,std::string& message){
-        message="";
-        message+=command;
-        for(int i=0;i<arguments.size();i++){
-                message+=Command::SEPARATOR;
-                message+=arguments[0];
-        }
-        message+=Command::TERMINAL;
-}
+void print_error(bool condition, const std::string& error_msg);
+void split_message(const std::string& message,std::string& first_argument,std::string& second_argument);
+void split_message(const std::string& message, std::string& argument);
+void make_message(const char command,const std::vector<std::string>& arguments,std::string& message);
+
 #endif

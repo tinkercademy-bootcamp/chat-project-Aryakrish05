@@ -1,13 +1,17 @@
 #include <string>
 #include <set>
 #include <map>
+#include <iostream>
 #include <unistd.h>
 #include "Server_channel.hpp"
 #include "Server_client.hpp"
 #include "Database.hpp"
 
-Client::Client(int socket):user_name("Default_name"),connected_socket(socket){}
+Client::Client(int socket):user_name("Default_name"),connected_socket(socket){
+        std::cout<<"Client Construction in progress..."<<user_name<<"\n";
+}
 Client::~Client(){
+        std::cout<<"Client Destruction in progress..."<<user_name<<"\n";
         close(connected_socket);
         for(auto member_channel:channel_list){
                 member_channel->remove_client(this);
@@ -36,4 +40,5 @@ std::string Client::get_user_name(){
 }
 void Client::set_user_name(std::string new_user_name){
         user_name=new_user_name;
+        std::cout<<"UserName is set to "<<user_name<<"\n";
 }

@@ -27,9 +27,13 @@ void split_message(const std::string& message, std::string& argument){
 void make_message(const char command,const std::vector<std::string>& arguments,std::string& message){
         message="";
         message+=command;
-        for(int i=0;i<arguments.size();i++){
+        int N_1=static_cast<int>(arguments.size())-1;
+        for(int i=0;i<N_1;i++){
+                message+=arguments[i];
                 message+=Command::SEPARATOR;
-                message+=arguments[0];
+        }
+        if(arguments.size()){
+                message+=arguments[N_1];
         }
         message+=Command::TERMINAL;
 }

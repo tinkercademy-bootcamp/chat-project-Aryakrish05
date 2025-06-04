@@ -2,17 +2,20 @@
  * Attention:
  * To keep things simple, do not handle socket/bind/listen/.../epoll_create/epoll_wait API error 
  */
+#include "Server.hpp"
+#include <cstdlib>
+#include <fstream>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/epoll.h>
+#include <iostream>
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <arpa/inet.h>
+#include <sys/epoll.h>
 
 #define DEFAULT_PORT    8080
 #define MAX_CONN        16
@@ -21,11 +24,15 @@
 #define MAX_LINE        256
 
 void server_run();
-void client_run();
+void client_run(char[]);
 
-int main(int argc, char *argv[])
+int main(int argc, char * argv[])
 {
-        client_run();
+	if(argc!=2){
+		std::cerr<<"Invalid call to exec"<<std::endl;
+		exit(EXIT_FAILURE);
+	}
+        client_run(argv[1]);
 	return 0;
 }
 
@@ -63,16 +70,11 @@ static int setnonblocking(int sockfd)
 /*
  * test clinet 
  */
-void client_run()
+void client_run(char log_file[])
 {
-	int n;
-	int c;
-	int sockfd;
-	char buf[MAX_LINE];
+	std::ofstream logger(log_file);
+	int sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	struct sockaddr_in srv_addr;
-
-	sockfd = socket(AF_INET, SOCK_STREAM, 0);
-
 	set_sockaddr(&srv_addr);
 
 	if (connect(sockfd, (struct sockaddr *)&srv_addr, sizeof(srv_addr)) < 0) {
@@ -80,22 +82,45 @@ void client_run()
 		exit(1);
 	}
 
+	int epoll_fd = epoll_create1(0);
+	setnonblocking(sockfd);
+	setnonblocking(STDIN_FILENO);
+
+	epoll_ctl_add(epoll_fd, sockfd, EPOLLIN | EPOLLET);
+	epoll_ctl_add(epoll_fd, STDIN_FILENO, EPOLLIN | EPOLLET);
+
+	char buf[MAX_LINE];
+	struct epoll_event events[MAX_EVENTS];
+	logger<<"input: ";
 	for (;;) {
-		printf("input: ");
-		fgets(buf, sizeof(buf), stdin);
-		c = strlen(buf) - 1;
-		buf[c] = '\0';
-		write(sockfd, buf, c + 1);
+		int no_events = epoll_wait(epoll_fd, events, MAX_EVENTS, 5000);
+		for (int i = 0; i < no_events; i++) {
+			int fd = events[i].data.fd;
 
-		bzero(buf, sizeof(buf));
-		while (errno != EAGAIN
-		       && (n = read(sockfd, buf, sizeof(buf))) > 0) {
-			printf("echo: %s\n", buf);
-			bzero(buf, sizeof(buf));
-
-			c -= n;
-			if (c <= 0) {
-				break;
+			if (fd == sockfd) {
+				std::string message = "";
+				for (;;) {
+					int bytes = recv(sockfd, buf, sizeof(buf), 0);
+					if (bytes <= 0) {
+						if (errno == EAGAIN || errno == EWOULDBLOCK) break;
+						if (bytes == 0) {
+							std::cout << "Server closed connection.\n";
+							close(sockfd);
+							return;
+						}
+						perror("recv");
+						break;
+					}
+					message.append(buf, bytes);
+				}
+				logger<< "Server sent message: " << message << std::endl;
+				logger<< "input: ";
+			} else if (fd == STDIN_FILENO) {
+				std::cout<<"input: ";
+				if (fgets(buf, sizeof(buf), stdin)) {
+					send(sockfd, buf, strlen(buf), 0);
+					logger<<buf<<std::endl;
+				}
 			}
 		}
 	}

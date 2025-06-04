@@ -31,7 +31,7 @@ enum Command{
         CHANNEL_CREATED='l',
         INVALID_INVITEE='m',
         INVITED='n',
-        CHANNELNAME_IN_USE='m',
+        CHANNELNAME_IN_USE='o',
         CHANNEL_JOINED='p',
         
         SEPARATOR='~',

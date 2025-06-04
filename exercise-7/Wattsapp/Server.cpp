@@ -51,8 +51,10 @@ void parse_message(std::string& message,Client* sender){
                 if(user_name_client_ptr.count(content)){
                         make_message(Command::USERNAME_IN_USE,{}, reply);
                         sender->send_data(reply);
+                        return;
                 }
                 sender->set_user_name(content);
+                user_name_client_ptr[content]=sender;
                 make_message(Command::USER_CREATED,{}, reply);
                 sender->send_data(reply);
                 return;
@@ -89,9 +91,11 @@ void parse_message(std::string& message,Client* sender){
                 if(channel_name_channel_ptr.count(channel_name)){
                         make_message(Command::CHANNELNAME_IN_USE,{},reply);
                         sender->send_data(reply);
+                        return;
                 }
                 Channel* new_channel=new Channel(channel_name,sender);
                 make_message(Command::CHANNEL_CREATED,{},reply);
+                channel_name_channel_ptr[channel_name]=new_channel;
                 sender->send_data(reply);
                 return;
         }

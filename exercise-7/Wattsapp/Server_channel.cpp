@@ -1,15 +1,18 @@
 #include <string>
 #include <set>
 #include <map>
+#include <iostream>
 #include "Server_channel.hpp"
 #include "Server_client.hpp"
 #include "Database.hpp"
 
 Channel::Channel(std::string name,Client* client_member):channel_name(name){
         client_list.insert(client_member);
+        std::cout<<"Channel Construction in Progress..."<<channel_name<<"\n";
 }
 Channel::~Channel(){
         //called only when no members are there
+        std::cout<<"Channel Destruction in progress..."<<channel_name<<"\n";
         channel_name_channel_ptr.erase(channel_name);
 }
 void Channel::broadcast_data(std::string data){

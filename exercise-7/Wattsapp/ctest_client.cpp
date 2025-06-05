@@ -67,9 +67,6 @@ static int setnonblocking(int sockfd)
 	return 0;
 }
 
-/*
- * test clinet 
- */
 void client_run(char log_file[])
 {
 	std::ofstream logger(log_file);

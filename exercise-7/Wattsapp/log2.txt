@@ -1,0 +1,18 @@
+input: aSam|
+
+Server sent message: aSam|
+
+input: Server sent message: i|
+input: Server sent message: cArya~fun|
+input: dfun|
+
+Server sent message: dfun|
+p|
+input: ffun~Hello|
+
+Server sent message: ffun~Hello|
+gSam~fun~Hello|
+input: hfun|
+
+Server sent message: hfun|
+k|

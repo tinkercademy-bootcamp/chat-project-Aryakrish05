@@ -1,0 +1,13 @@
+input: aArya|
+
+Server sent message: aArya|
+i|
+input: efun|
+
+Server sent message: efun|
+l|
+input: bSam~fun|
+
+Server sent message: bSam~fun|
+n|
+input: Server sent message: gSam~fun~Hello|

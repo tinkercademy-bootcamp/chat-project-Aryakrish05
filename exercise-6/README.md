@@ -9,11 +9,22 @@
   [More info here](https://github.com/gabime/spdlog) - Fast C++ logging 
   library with various sink types and formatting options
 - How do you compile this file using the `g++` CLI?
+  - If we use the debian package manager `sudo apt install libspdlog-dev` and `sudo apt install libfmt-dev` to install the spdlog and fmt libraries, then we just have to call  `g++ <filename> -o <exec_name> -lspdlog -lfmt` to compile.
+  - This is because the linker looks only some locations unless a `-L` flag is specified. The package managers install and place the binaries in these locations.
 - What do you need to change in your makefile to use this library?
+  - `LDFLAGS` must be modified to include both of these flags `-lspdlog` and `-lfmt` which tell the linker that some programs might need to use these libraries.
+  - We should also add a target to compile the spdlog file
 - How many different ways can this library be added into your project?
+  - Use `sudo apt install libspdlog-dev` to install it onto the default directories which the linker searches for and `#include<spdlog/spdlog.h>` in the .cpp file. While compiling `-lspdlog` must be used as a flag
+  - Use other package managers and handle ensure that the `-I` flag is given so that the header files are searched in appropriate locations by the compiler. `-L` should also be given to mention the directories for the linker to find required executables.
+  - We may build from source and install, we would  have to clone the git repository and use the appropriate build system, CMake in this case to compile the files. After which we may resort to using `-I` and `-L` flags or just use `sudo make install`. This will copy the binaries and libraries into system wide directories which are by default searched for by our compilers and linkers.
+  - **We may copy paste Header-only files manually onto our project directory.**
 - What are the tradeoffs in the different ways?
+  - The package manager usage is easier to handle but the installed versions may be outdated
+  - Building from source may ensure that you install the most recent version but you may have to make any updates manually.
+  - copy pasting header only files will take a lot of compilation time which is not good.
 - Why are there so many different ways to do it?
-  
+  - C++ hasn't provided a default way of doing it and there have been multiple improvements over the years and older methods may only work for legacy software.  
 ## Static Linking vs Dynamic Linking
 
 - What are the differences between static linking and dynamic linking?

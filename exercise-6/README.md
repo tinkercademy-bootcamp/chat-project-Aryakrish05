@@ -34,7 +34,22 @@
 ## Git Clone and Building from Source
 
 - Where is `g++` looking for the include files and library files?
+  - There are two kinds of header files, one enclosed in `""` and the other enclosed in `<>`. For the first one the compiler first searchs in the current directory and then searches in the standard system directories while for the second one it searches in the default include search paths.
+  - These default include search paths for includes depend on which operating system is being used, for my ssh system, `/usr/include`,`/usr/lib/gcc/aarch64-linux-gnu/14/include`,`/usr/include/aarch64-linux-gnu` and `/usr/include`   
+  In my windows system I got paths like ` c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include`. Note here is that `\` and `/` are both used as directory separators in windows, although `bin\..` is redundant , it is probably present as the compiler binaries are present in `c:\mingw\bin`. 
+  - Unless `-I` flags are mentioned, `g++` looks for the include files in these standard directories for the header files, if `-I[path to header-files]` is mentioned, it searches in the path provided first , note that even if the path provided isn't valid, there will be no error thrown and it tries checking in these places, if it can't find the header, it looks in the default include search paths
+  - Note about `-I./path/to/directory`- this refers to a directory starting from current directory while `-I/path/to/directory` refers to a directory starting from the root directory `/`.
+  - The linker searches first in the directories mentioned in `-L` flags (which is very similar to `-I` flag but is an instruction to the linker) and then in the default library search paths.
+  -The default library search paths are `/usr/local/lib/aarch64-linux-gnu`,
+`/lib/aarch64-linux-gnu`,`/usr/lib/aarch64-linux-gnu`,`/usr/local/lib`,`/lib`,
+`/usr/lib`,`/usr/aarch64-linux-gnu/lib` on my ssh system.
+**Does this depend on architecture ?**
 - How do you find out?
+  - To find where the compiler searches for the header files, 
+    `g++ -v -E - < /dev/null` may be used to get the paths searched, on linux.
+    On windows, `g++ -v -E - < NUL` may be used. 
+  - To get the default directories for libraries, multiple methods exist,for example (in linux)`ld --verbose | grep SEARCH_DIR` may be used.
+  - To find where the obj files etc are present in the system for a particular library, we may use `sudo find / -type d -name spdlog 2>/dev/null` on linux.
 
 ## C++ Package Managers
 

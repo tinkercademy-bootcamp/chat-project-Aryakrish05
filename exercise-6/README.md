@@ -54,5 +54,9 @@
 ## C++ Package Managers
 
 - Why are there so many C++ package managers?
+  - C++ is a pretty old language which doesn't have any official package manager due to which different people have built their own with time.
+  - Some old(legacy) libraries are not compatible with the new package managers and thus we can't stop using the old package managers.
 - Which one is the best one?
+  - Nowadays, conan and vcpkg have become popular.
 - Which are the most notable ways to manage the compilation of C++ projects?
+  - Different build systems may be used.

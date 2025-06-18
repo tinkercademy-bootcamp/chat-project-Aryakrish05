@@ -45,7 +45,7 @@ void send_and_receive_message(int sock, const std::string &message) {
   }
 }
 
-std::string read_args(int argc, char *argv[]) {
+std::string read_args(int argc, char *argv[]) { 
   using namespace tt::chat;
   std::string message = "Hello from client";
   if (argc == 1) {
